@@ -163,7 +163,13 @@ Visualize, cancele e gerencie horários.
 
 <div id="status" class="status"></div>
 
-<div class="admin-list" id="adminList"></div>
+<div class="admin-list" id="adminList">
+
+<div class="empty">
+Carregando agendamentos...
+</div>
+
+</div>
 
 </div>
 
@@ -178,6 +184,12 @@ let bookedAppointments = [];
 
 async function loadAppointments(){
 
+adminList.innerHTML = `
+<div class="empty">
+Carregando agendamentos...
+</div>
+`;
+
 try{
 
 const response = await fetch(SCRIPT_URL);
@@ -189,6 +201,12 @@ renderAdmin();
 
 }catch(error){
 
+adminList.innerHTML = `
+<div class="empty">
+Erro ao carregar agendamentos.
+</div>
+`;
+
 showStatus("Erro ao carregar agendamentos.","error");
 
 }
@@ -199,11 +217,14 @@ function renderAdmin(){
 
 adminList.innerHTML = "";
 
-if(bookedAppointments.length === 0){
+if(
+!bookedAppointments ||
+bookedAppointments.length === 0
+){
 
 adminList.innerHTML = `
 <div class="empty">
-Nenhum horário agendado.
+Nenhum horário reservado no momento.
 </div>
 `;
 
